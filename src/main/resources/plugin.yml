@@ -1,0 +1,15 @@
+name: RealmCraft
+version: '${version}'
+main: quest.yuzhou.realmcraft.RealmCraft
+api-version: '1.19'
+commands:
+  rc:
+    description: Main command of RealmCraft plugin.
+  rca:
+    description: Admin command of RealmCraft plugin.
+    permission: RealmCraft.admin
+    permission-message: 你沒有權限。
+permissions:
+  RealmCraft.admin:
+    description: Admin permission of RealmCraft plugin.
+

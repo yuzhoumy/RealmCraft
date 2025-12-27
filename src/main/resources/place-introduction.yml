@@ -1,0 +1,6 @@
+sound-on-click: block.note_block.xylophone
+intro:
+  rpg-shop:
+    location: main1,79,77,53
+    function: "購買裝備"
+    description: "很久以前，"

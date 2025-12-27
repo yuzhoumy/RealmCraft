@@ -1,0 +1,41 @@
+create-restart-flag: true
+prefix: '&2> &aRealmCraft &f'
+main-menu-name: '&aRealmCraft &7/ &2領域世界'
+player-menu-name: '&b我的數據'
+tutorial-menu-name: '&e新手教學'
+strategic-event-menu-name: '&4戰略事件系統'
+manual-menu-name: '&e説明書'
+contract-duration: 10
+main-world-name: main1
+field-world-name: field
+chest-names:
+  - p
+  - d
+  - s
+  - yj
+  - m
+  - f
+  - y
+refresh-resource-point-when-restart: false
+reward-score-constant: 20
+recycle-station-location: main1,-21,85,81
+recycle-station-lever-location: main1,-21,85,76
+recycle-station-prices:
+  - 一級-1
+  - 二級-1
+  - 三級-1
+  - 四級-1
+  - 五級-2
+  - 六級-4
+  - 七級-8
+recycle-types:
+  - 劍
+  - 長柄武器
+  - 副手
+  - 斧
+  - 盔甲
+  - 弓
+  - 弩
+  - 槍
+  - 符文
+  - 法杖

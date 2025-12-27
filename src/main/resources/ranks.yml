@@ -1,0 +1,19 @@
+ranks:
+  - id: unset
+    name: "無段位"
+    threshold: 0
+  - id: wood
+    name: "木"
+    threshold: 200
+  - id: iron
+    name: "鐵"
+    threshold: 500
+  - id: silver
+    name: "銀"
+    threshold: 900
+  - id: gold
+    name: "金"
+    threshold: 1400
+  - id: diamond
+    name: "鑽"
+    threshold: 2000
