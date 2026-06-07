@@ -31,6 +31,11 @@ public class AdminCommandManager implements CommandExecutor {
         subCommands.add(new ResetInstancesCooldown());
         subCommands.add(new QuerySeason());
         subCommands.add(new SetSeasonStartDate());
+        subCommands.add(new SetKitClaimed());
+        subCommands.add(new SetFinalKitClaimed());
+        subCommands.add(new GetSeasonSouvenirItem());
+        subCommands.add(new SeasonRewardItems());
+        subCommands.add(new UnlockChests());
     }
 
     @Override

@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import quest.yuzhou.realmcraft.RealmCraft;
 import quest.yuzhou.realmcraft.Utilities;
-import quest.yuzhou.realmcraft.misc.strategicevent.StrategicEvent;
+import quest.yuzhou.realmcraft.types.StrategicEvent;
 import quest.yuzhou.realmcraft.player.menu.MenuManager;
 
 import java.util.List;

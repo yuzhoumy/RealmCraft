@@ -24,6 +24,7 @@ public class CommandManager implements CommandExecutor {
         subCommands.add(new SE());
         subCommands.add(new JoinBounty());
         subCommands.add(new Handbook());
+        subCommands.add(new Season());
     }
 
     @Override

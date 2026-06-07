@@ -501,10 +501,11 @@ public class Database {
      * - Resets rank to 'unset'
      * - Resets point to 0
      * - Clears all kit claims
+     * - Clears all final kit claims
      * @return Number of players affected
      */
     public int archiveAndResetSeasonForAllPlayers() throws SQLException {
-        int affectedRows = 0;
+        int affectedRows;
 
         try (Statement statement = connection.createStatement()) {
             // Archive rank and point, then reset them
@@ -517,6 +518,7 @@ public class Database {
 
         // Also clear all kit claims for new season
         clearAllKitClaimsForAllPlayers();
+        clearAllFinalKitClaimForAllPlayers();
 
         return affectedRows;
     }
@@ -563,31 +565,49 @@ public class Database {
         return false;
     }
 
-    public void setLastSeasonFinalKitClaimed(UUID uuid) throws SQLException {
+    public void setLastSeasonFinalKitClaimed(UUID uuid, boolean claimed) throws SQLException {
         if (!playerExists(uuid)) {
             addPlayer(uuid);
         }
-        try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET lastSeasonFinalKitClaimed = 1 WHERE uuid = ?")) {
+        int claimedNumber = claimed ? 1 : 0;
+        try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET lastSeasonFinalKitClaimed = " + claimedNumber + " WHERE uuid = ?")) {
             preparedStatement.setString(1, uuid.toString());
             preparedStatement.executeUpdate();
         }
     }
 
     /**
-     * Mark a kit as claimed for a player
+     * Clear last season final kit claim status for all players
+     * Use this when starting a new season to allow players to claim new final kits
+     * @return Number of players affected
+     */
+    public int clearAllFinalKitClaimForAllPlayers() throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            int affectedRows = statement.executeUpdate(
+                    "UPDATE players SET lastSeasonFinalKitClaimed = 0"
+            );
+            plugin.getLogger().info("已重置 " + affectedRows + " 位玩家的結算禮包領取狀態");
+            return affectedRows;
+        }
+    }
+
+    /**
+     * Mark a kit as claimed or not claimed for a player
      * @param uuid Player's UUID
      * @param rank Kit rank (wood, iron, silver, gold, diamond)
      * @param day Kit day (7, 14, 21)
+     * @param claimed Player has claimed kit
      */
-    public void setKitClaimed(UUID uuid, String rank, int day) throws SQLException {
+    public void setKitClaimed(UUID uuid, String rank, int day, boolean claimed) throws SQLException {
         if (!playerExists(uuid)) {
             addPlayer(uuid);
         }
 
         String columnName = "kitClaimed_" + rank + "_day" + day;
+        int claimedNumber = claimed ? 1 : 0;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(
-                "UPDATE players SET " + columnName + " = 1 WHERE uuid = ?")) {
+                "UPDATE players SET " + columnName + " = " + claimedNumber + " WHERE uuid = ?")) {
             preparedStatement.setString(1, uuid.toString());
             preparedStatement.executeUpdate();
         }
@@ -598,7 +618,7 @@ public class Database {
      */
     public void clearAllKitClaimsForAllPlayers() throws SQLException {
         String[] ranks = {"wood", "iron", "silver", "gold", "diamond"};
-        String[] days = {"day7", "day14", "day21"};
+        String[] days = {"7", "14", "21"};
 
         // Build UPDATE query to reset all kit columns to 0
         StringBuilder sql = new StringBuilder("UPDATE players SET ");

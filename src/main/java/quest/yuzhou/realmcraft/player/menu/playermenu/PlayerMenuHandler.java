@@ -28,7 +28,6 @@ public class PlayerMenuHandler implements Listener {
         if (event.getCurrentItem().getItemMeta().hasDisplayName()) {
             if (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("返回")) {
                 Player player = (Player) event.getWhoClicked();
-                player.closeInventory();
                 plugin.getMenuManager().getMenu(MenuManager.MenuType.MAIN_MENU).open(player);
             }
         }

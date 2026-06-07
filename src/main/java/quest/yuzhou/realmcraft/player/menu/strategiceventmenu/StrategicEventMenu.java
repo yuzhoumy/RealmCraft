@@ -1,7 +1,6 @@
 package quest.yuzhou.realmcraft.player.menu.strategiceventmenu;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -9,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import quest.yuzhou.realmcraft.RealmCraft;
 import quest.yuzhou.realmcraft.Utilities;
-import quest.yuzhou.realmcraft.misc.strategicevent.StrategicEvent;
+import quest.yuzhou.realmcraft.types.StrategicEvent;
 import quest.yuzhou.realmcraft.player.menu.AbstractMenu;
 
 import java.util.List;

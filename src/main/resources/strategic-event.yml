@@ -5,6 +5,8 @@ bounty:
 gate-of-the-brave:
   cooldown: 600000 #in millisecond
   min-player: 3
+  min-point: 100
+  total-prize: 500
 resource-storm:
   cooldown: 1800000 #in millisecond
   command: rp resource-storm

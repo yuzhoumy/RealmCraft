@@ -3,6 +3,10 @@ package quest.yuzhou.realmcraft;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public class Utilities {
 
@@ -38,5 +42,65 @@ public class Utilities {
         return ((double) Math.round(input * 100)) / 100;
     }
 
+    public static boolean hasInventorySpace(Player player, List<ItemStack> items) {
+        Inventory inventory = player.getInventory();
+
+        // Create a copy of only the storage contents (slots 0-35)
+        ItemStack[] inventoryCopy = new ItemStack[36];
+        ItemStack[] storageContents = inventory.getStorageContents();
+
+        // Deep copy the storage inventory
+        for (int i = 0; i < storageContents.length && i < 36; i++) {
+            if (storageContents[i] != null && !storageContents[i].getType().isAir()) {
+                inventoryCopy[i] = storageContents[i].clone();
+            }
+        }
+
+        // Try to fit each item into the copied inventory
+        for (ItemStack item : items) {
+            if (item == null || item.getType().isAir()) {
+                continue;
+            }
+
+            int remainingAmount = item.getAmount();
+
+            // First, try to stack with existing items
+            for (ItemStack itemStack : inventoryCopy) {
+                if (remainingAmount <= 0) break;
+
+                if (itemStack != null && itemStack.isSimilar(item)) {
+                    int maxStack = itemStack.getMaxStackSize();
+                    int spaceInSlot = maxStack - itemStack.getAmount();
+
+                    if (spaceInSlot > 0) {
+                        int amountToAdd = Math.min(spaceInSlot, remainingAmount);
+                        itemStack.setAmount(itemStack.getAmount() + amountToAdd);
+                        remainingAmount -= amountToAdd;
+                    }
+                }
+            }
+
+            // Then, use empty slots for remaining items
+            for (int i = 0; i < inventoryCopy.length; i++) {
+                if (remainingAmount <= 0) break;
+
+                if (inventoryCopy[i] == null) {
+                    int maxStack = item.getMaxStackSize();
+                    int amountToAdd = Math.min(maxStack, remainingAmount);
+
+                    inventoryCopy[i] = item.clone();
+                    inventoryCopy[i].setAmount(amountToAdd);
+                    remainingAmount -= amountToAdd;
+                }
+            }
+
+            // If there's still items left, inventory is full
+            if (remainingAmount > 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 }

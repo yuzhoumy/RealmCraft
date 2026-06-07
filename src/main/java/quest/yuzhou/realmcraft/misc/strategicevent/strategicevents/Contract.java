@@ -1,5 +1,8 @@
 package quest.yuzhou.realmcraft.misc.strategicevent.strategicevents;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -12,9 +15,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import quest.yuzhou.realmcraft.RealmCraft;
 import quest.yuzhou.realmcraft.Utilities;
-import quest.yuzhou.realmcraft.misc.strategicevent.StrategicEvent;
+import quest.yuzhou.realmcraft.types.StrategicEvent;
 
-import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -50,67 +52,67 @@ public class Contract extends StrategicEvent implements Listener {
         }
     }
 
-    @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
-        Player player = event.getPlayer();
-        String message = event.getMessage();
-
-        // Handle contract invitation
-        if (waitingResponses.contains(player.getUniqueId())) {
-            plugin.getLogger().info("waiting response include player");
-            event.setCancelled(true); // 先取消事件
-
-            // 在主线程中处理邀请逻辑
-            Bukkit.getScheduler().runTask(plugin, () -> {
-                // 检查服务器重启状态
-                if (plugin.getRestarter().isPreparingRestart()) {
-                    player.sendMessage(plugin.prefix + "伺服器即將重啟，暫時無法使用此功能。");
-                    waitingResponses.remove(player.getUniqueId());
-                    return;
-                }
-
-                waitingResponses.remove(player.getUniqueId());
-                Player target = Bukkit.getPlayerExact(message);
-
-                if (target != null && !target.equals(player)) {
-                    processContractInvitation(player, target);
-                } else {
-                    player.sendMessage(plugin.prefix + ChatColor.RED + "你不能請求自己。或者該玩家不存在。");
-                }
-            });
-        }
-
-        // Handle responses - 移到同步任务中处理
-        if (message.equalsIgnoreCase("y") || message.equalsIgnoreCase("n")) {
-            UUID responderId = player.getUniqueId();
-            UUID inviterId = null;
-
-            for (Map.Entry<UUID, UUID> entry : pendingInvites.entrySet()) {
-                if (entry.getValue().equals(responderId)) {
-                    inviterId = entry.getKey();
-                    break;
-                }
-            }
-
-            if (inviterId != null) {
-                event.setCancelled(true); // 先取消事件
-                UUID finalInviterId = inviterId;
-
-                // 在主线程中处理响应
-                Bukkit.getScheduler().runTask(plugin, () -> {
-                    Player inviter = Bukkit.getPlayer(finalInviterId);
-                    if (inviter != null) {
-                        if (message.equalsIgnoreCase("y")) {
-                            acceptContract(inviter, player);
-                        } else {
-                            declineContract(inviter, player);
-                        }
-                    }
-                    pendingInvites.remove(finalInviterId);
-                });
-            }
-        }
-    }
+//    @EventHandler
+//    public void onPlayerChat(AsyncPlayerChatEvent event) {
+//        Player player = event.getPlayer();
+//        String message = event.getMessage();
+//
+//        // Handle contract invitation
+//        if (waitingResponses.contains(player.getUniqueId())) {
+//            plugin.getLogger().info("waiting response include player");
+//            event.setCancelled(true); // 先取消事件
+//
+//            // 在主线程中处理邀请逻辑
+//            Bukkit.getScheduler().runTask(plugin, () -> {
+//                // 检查服务器重启状态
+//                if (plugin.getRestarter().isPreparingRestart()) {
+//                    player.sendMessage(plugin.prefix + "伺服器即將重啟，暫時無法使用此功能。");
+//                    waitingResponses.remove(player.getUniqueId());
+//                    return;
+//                }
+//
+//                waitingResponses.remove(player.getUniqueId());
+//                Player target = Bukkit.getPlayerExact(message);
+//
+//                if (target != null && !target.equals(player)) {
+//                    processContractInvitation(player, target);
+//                } else {
+//                    player.sendMessage(plugin.prefix + ChatColor.RED + "你不能請求自己。或者該玩家不存在。");
+//                }
+//            });
+//        }
+//
+//        // Handle responses - 移到同步任务中处理
+//        if (message.equalsIgnoreCase("y") || message.equalsIgnoreCase("n")) {
+//            UUID responderId = player.getUniqueId();
+//            UUID inviterId = null;
+//
+//            for (Map.Entry<UUID, UUID> entry : pendingInvites.entrySet()) {
+//                if (entry.getValue().equals(responderId)) {
+//                    inviterId = entry.getKey();
+//                    break;
+//                }
+//            }
+//
+//            if (inviterId != null) {
+//                event.setCancelled(true); // 先取消事件
+//                UUID finalInviterId = inviterId;
+//
+//                // 在主线程中处理响应
+//                Bukkit.getScheduler().runTask(plugin, () -> {
+//                    Player inviter = Bukkit.getPlayer(finalInviterId);
+//                    if (inviter != null) {
+//                        if (message.equalsIgnoreCase("y")) {
+//                            acceptContract(inviter, player);
+//                        } else {
+//                            declineContract(inviter, player);
+//                        }
+//                    }
+//                    pendingInvites.remove(finalInviterId);
+//                });
+//            }
+//        }
+//    }
 
     private void processContractInvitation(Player player, Player target) {
 
@@ -137,6 +139,11 @@ public class Contract extends StrategicEvent implements Listener {
         target.sendMessage(plugin.prefix + player.getName() + " 要和你簽訂契約，持續 " + duration + " 分鐘。");
         target.sendMessage(plugin.prefix + "你有 30 秒鐘時間決定：");
         target.sendMessage(plugin.prefix + Utilities.colorize("&e輸入 \"&by&e\" 同意，或 \"&bn&e\" 拒絕。"));
+        TextComponent acceptComponent = new TextComponent(TextComponent.fromLegacyText(ChatColor.GREEN + "【接受】"));
+        acceptComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/rc accept-contract"));
+        TextComponent denyComponent = new TextComponent(TextComponent.fromLegacyText(ChatColor.RED + "【拒絕】"));
+        denyComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/rc deny-contract"));
+        target.spigot().sendMessage(new TextComponent(TextComponent.fromLegacyText("請點擊： ")), acceptComponent, new TextComponent(TextComponent.fromLegacyText(" 或 ")), denyComponent);
 
         // 30秒后自动移除邀请
         new BukkitRunnable() {
@@ -157,7 +164,19 @@ public class Contract extends StrategicEvent implements Listener {
         }.runTaskLater(plugin, 600); // 30 seconds
     }
 
-    private void acceptContract(Player inviter, Player acceptor) {
+    public void acceptContract(Player acceptor) {
+
+        Player inviter = null;
+        for (Map.Entry<UUID, UUID> invites : pendingInvites.entrySet()) {
+            if (invites.getValue().equals(acceptor.getUniqueId())) {
+                inviter = Bukkit.getPlayer(invites.getKey());
+            }
+        }
+        if (inviter == null) {
+            acceptor.sendMessage(plugin.prefix = ChatColor.RED + "你沒有收到任何契約邀請！");
+            return;
+        }
+
         inviter.sendMessage(plugin.prefix + ChatColor.YELLOW + acceptor.getName() + " 已同意簽訂契約。");
         acceptor.sendMessage(plugin.prefix + ChatColor.YELLOW + "你已與 " + inviter.getName() + " 簽訂契約。");
 
@@ -169,32 +188,43 @@ public class Contract extends StrategicEvent implements Listener {
 
         inviter.setLevel(inviter.getLevel() - costNeeded);
 
+        Player finalInviter = inviter;
         new BukkitRunnable() {
             @Override
             public void run() {
-                Set<UUID> inviterSet = activeContracts.get(inviter.getUniqueId());
+                Set<UUID> inviterSet = activeContracts.get(finalInviter.getUniqueId());
                 if (inviterSet != null) {
                     inviterSet.remove(acceptor.getUniqueId());
                     if (inviterSet.isEmpty()) {
-                        activeContracts.remove(inviter.getUniqueId());
+                        activeContracts.remove(finalInviter.getUniqueId());
                     }
                 }
                 Set<UUID> accepterSet = activeContracts.get(acceptor.getUniqueId());
                 if (accepterSet != null) {
-                    accepterSet.remove(inviter.getUniqueId());
+                    accepterSet.remove(finalInviter.getUniqueId());
                     if (accepterSet.isEmpty()) {
                         activeContracts.remove(acceptor.getUniqueId());
                     }
                 }
-                inviter.sendMessage(plugin.prefix + ChatColor.RED + "你與 " + acceptor.getName() + " 的契約已結束，現在你們可以互相攻擊了。");
+                finalInviter.sendMessage(plugin.prefix + ChatColor.RED + "你與 " + acceptor.getName() + " 的契約已結束，現在你們可以互相攻擊了。");
                 acceptor.sendMessage(plugin.prefix + ChatColor.RED + "你與 " + acceptor.getName() + " 的契約已結束，現在你們可以互相攻擊了。");
-                inviter.playSound(inviter, Sound.ENTITY_ZOMBIE_VILLAGER_CONVERTED, 10, 1);
+                finalInviter.playSound(finalInviter, Sound.ENTITY_ZOMBIE_VILLAGER_CONVERTED, 10, 1);
                 acceptor.playSound(acceptor, Sound.ENTITY_ZOMBIE_VILLAGER_CONVERTED, 10, 1);
             }
         }.runTaskLater(plugin, (long) duration * 60 * 20); // duration minutes
     }
 
-    private void declineContract(Player inviter, Player decliner) {
+    private void declineContract(Player decliner) {
+        Player inviter = null;
+        for (Map.Entry<UUID, UUID> invites : pendingInvites.entrySet()) {
+            if (invites.getValue().equals(decliner.getUniqueId())) {
+                inviter = Bukkit.getPlayer(invites.getKey());
+            }
+        }
+        if (inviter == null) {
+            decliner.sendMessage(plugin.prefix = ChatColor.RED + "你沒有收到任何契約邀請！");
+            return;
+        }
         inviter.sendMessage(plugin.prefix + ChatColor.RED + decliner.getName() + " 拒絕了你的契約邀請。");
         decliner.sendMessage(plugin.prefix + ChatColor.RED + "你拒絕了與 " + inviter.getName() + " 的契約。");
     }

@@ -59,7 +59,7 @@ public class MainMenu extends AbstractMenu {
 
             discordItem = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta discordMeta = (SkullMeta) discordItem.getItemMeta();
-            discordMeta.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString("afdb7eca-e827-402f-bfb2-740ccbee1dad")));
+            discordMeta.setOwningPlayer(Bukkit.getOfflinePlayer("SeogE"));
             discordMeta.setDisplayName(ChatColor.AQUA + "Discord");
             List<String> discordLore = new ArrayList<>();
             discordLore.add(ChatColor.GRAY + "伺服器的Discord聊天群。");

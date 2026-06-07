@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import quest.yuzhou.rcchest.RCChest;
 import quest.yuzhou.realmcraft.command.AdminCommandManager;
 import quest.yuzhou.realmcraft.command.AdminCommandTabCompleter;
 import quest.yuzhou.realmcraft.command.CommandManager;
@@ -20,6 +21,7 @@ import quest.yuzhou.realmcraft.misc.PreventPlayerBreakHanging;
 import quest.yuzhou.realmcraft.misc.PreventPutBackPackInsideBackPack;
 import quest.yuzhou.realmcraft.misc.afkarea.AFKArea;
 import quest.yuzhou.realmcraft.misc.biomeevent.BiomePotionEffect;
+import quest.yuzhou.realmcraft.misc.chestunlocker.ChestUnlocker;
 import quest.yuzhou.realmcraft.misc.emergencypack.EmergencyPackChestListener;
 import quest.yuzhou.realmcraft.misc.instance.InstanceManager;
 import quest.yuzhou.realmcraft.misc.biomeevent.MusicPlayer;
@@ -34,6 +36,7 @@ import quest.yuzhou.realmcraft.misc.newbie.listener.NewbieStartIntro;
 import quest.yuzhou.realmcraft.misc.season.SeasonManager;
 import quest.yuzhou.realmcraft.misc.strategicevent.StrategicEventManager;
 import quest.yuzhou.realmcraft.placeholder.KillCounterPlaceholderExpansion;
+import quest.yuzhou.realmcraft.placeholder.NextChestUnlockTimePlaceholderExpansion;
 import quest.yuzhou.realmcraft.placeholder.RankingPlaceholderExpansion;
 import quest.yuzhou.realmcraft.placeholder.SeasonPlaceholderExpansion;
 import quest.yuzhou.realmcraft.player.PlayerJoinLeaveListener;
@@ -64,6 +67,7 @@ public final class RealmCraft extends JavaPlugin {
     public World mainWorld;
     public World fieldWorld;
     private Economy economy;
+    private RCChest rcChest;
     private ConfigManager configManager;
     private Database database;
     private RankManager rankManager;
@@ -79,6 +83,7 @@ public final class RealmCraft extends JavaPlugin {
     private MusicPlayer musicPlayer;
     private KillCounter killCounter;
     private AFKArea afkArea;
+    private ChestUnlocker chestUnlocker;
 
     private List<PlaceholderExpansion> placeholderExpansionList;
     private List<Listener> listenerList;
@@ -106,6 +111,11 @@ public final class RealmCraft extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
         }
 
+        if (!setupRCChestPlugin()) {
+            getLogger().severe("Error while loading RCChest dependency");
+            getServer().getPluginManager().disablePlugin(this);
+        }
+
         prefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("prefix"));
         mainWorld = Bukkit.getWorld(getConfig().getString("main-world-name"));
         if (mainWorld == null) {
@@ -129,6 +139,7 @@ public final class RealmCraft extends JavaPlugin {
         musicPlayer = new MusicPlayer(this);
         killCounter = new KillCounter(this);
         afkArea = new AFKArea(this);
+        chestUnlocker = new ChestUnlocker(this);
 
         commandManager = new CommandManager(this);
         adminCommandManager = new AdminCommandManager(this);
@@ -156,6 +167,7 @@ public final class RealmCraft extends JavaPlugin {
         listenerList.add(new Rewards(this));
         listenerList.add(musicPlayer);
         listenerList.add(killCounter);
+        listenerList.add(newbieIntroduction);
         listenerList.add(new BiomePotionEffect(this));
         listenerList.add(new PreventPutBackPackInsideBackPack());
         listenerList.add(new RecycleStation(this));
@@ -170,6 +182,7 @@ public final class RealmCraft extends JavaPlugin {
             placeholderExpansionList.add(new RankingPlaceholderExpansion(this));
             placeholderExpansionList.add(new KillCounterPlaceholderExpansion(this));
             placeholderExpansionList.add(new SeasonPlaceholderExpansion(this));
+            placeholderExpansionList.add(new NextChestUnlockTimePlaceholderExpansion(this));
 
             placeholderExpansionList.forEach(PlaceholderExpansion::register);
 
@@ -201,6 +214,7 @@ public final class RealmCraft extends JavaPlugin {
         strategicEventManager.stop();
         afkArea.stop();
         musicPlayer.stop();
+        chestUnlocker.stop();
         listenerList.forEach(HandlerList::unregisterAll);
         placeholderExpansionList.forEach(PlaceholderExpansion::unregister);
     }
@@ -217,8 +231,28 @@ public final class RealmCraft extends JavaPlugin {
         return economy != null;
     }
 
+    private boolean setupRCChestPlugin() {
+        try {
+            this.rcChest = getPlugin(RCChest.class);
+        } catch (Exception e) {
+            getLogger().severe("Error while importing RCChest plugin!");
+            return false;
+        }
+        return true;
+    }
+
+    public void broadcast(String message) {
+        List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+        players.removeAll(newbieIntroduction.getRunning());
+        players.forEach(player -> player.sendMessage(message));
+    }
+
     public Economy getEconomy() {
         return economy;
+    }
+
+    public RCChest getRCChest() {
+        return rcChest;
     }
 
     public ConfigManager getConfigManager() {
@@ -267,6 +301,10 @@ public final class RealmCraft extends JavaPlugin {
 
     public KillCounter getKillCounter() {
         return killCounter;
+    }
+
+    public ChestUnlocker getChestUnlocker() {
+        return chestUnlocker;
     }
 
     public CommandManager getCommandManager() {

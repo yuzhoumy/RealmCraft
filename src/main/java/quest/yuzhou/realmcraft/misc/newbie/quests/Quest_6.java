@@ -1,6 +1,7 @@
 package quest.yuzhou.realmcraft.misc.newbie.quests;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import quest.yuzhou.realmcraft.RealmCraft;
@@ -30,11 +31,16 @@ public class Quest_6 extends NewbieQuest {
     @EventHandler
     public void onComplete(PlayerTradeEvent event) {
         if (!isQuestRunning(event.getPlayer())) return;
+
         if (
                 event.getCurrentTradeItem().materials().get(0).getName().contains("合成木板") &&
-                event.getCurrentShop().getName().equalsIgnoreCase("shop_recycle")
+                event.getCurrentShop().name().equalsIgnoreCase("shop_recycle")
         ) {
             completeQuest(event.getPlayer());
+        } else {
+            event.getPlayer().sendMessage(plugin.prefix + ChatColor.RED + "請聽從教學的指示，到官方商店找 “資源回收” 回收合成木板哦。");
+            event.setCancelled(true);
+            event.getPlayer().closeInventory();
         }
     }
 

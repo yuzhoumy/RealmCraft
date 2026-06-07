@@ -1,4 +1,4 @@
-package quest.yuzhou.realmcraft.misc.strategicevent;
+package quest.yuzhou.realmcraft.types;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

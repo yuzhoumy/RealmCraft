@@ -38,6 +38,7 @@ public class PlayerMenu extends AbstractMenu {
         ItemStack returnItem = null;
         ItemStack profileItem = null;
         ItemStack moneyItem = null;
+        ItemStack expItem = null;
         ItemStack rankItem = null;
 
         try {
@@ -59,6 +60,14 @@ public class PlayerMenu extends AbstractMenu {
             moneyMeta.setDisplayName(Utilities.colorize("&e現有金錢：&6$" + balance));
             moneyMeta.setCustomModelData(10004);
             moneyItem.setItemMeta(moneyMeta);
+
+            expItem = new ItemStack(Material.EXPERIENCE_BOTTLE);
+            ItemMeta expMeta = expItem.getItemMeta();
+            expMeta.setDisplayName(Utilities.colorize("&c現有等級：&6" + player.getLevel()));
+            List<String> expLore = new ArrayList<>();
+            expLore.add(Utilities.colorize("&c折合經驗值：&6" + player.getTotalExperience()));
+            expMeta.setLore(expLore);
+            expItem.setItemMeta(expMeta);
 
             Rank rank = null;
             int point = 0;
@@ -86,7 +95,8 @@ public class PlayerMenu extends AbstractMenu {
         inventory.setItem(18, returnItem);
         inventory.setItem(10, profileItem);
         inventory.setItem(12, moneyItem);
-        inventory.setItem(13, rankItem);
+        inventory.setItem(13, expItem);
+        inventory.setItem(14, rankItem);
 
         player.openInventory(inventory);
 

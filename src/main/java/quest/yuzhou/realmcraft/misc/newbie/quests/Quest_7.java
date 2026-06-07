@@ -1,6 +1,7 @@
 package quest.yuzhou.realmcraft.misc.newbie.quests;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import quest.yuzhou.realmcraft.RealmCraft;
@@ -32,8 +33,13 @@ public class Quest_7 extends NewbieQuest {
         if (!isQuestRunning(event.getPlayer())) {
             return;
         }
-        if (event.getCurrentShop().getName().equalsIgnoreCase("rpgshop-newbieseller"))
+        if (event.getCurrentShop().name().equalsIgnoreCase("rpgshop-newbieseller"))
             completeQuest(event.getPlayer());
+        else {
+            event.getPlayer().sendMessage(plugin.prefix + ChatColor.RED + "請聽從教學的指示，找 “鍛造師學徒” 兌換任意一個新手裝備哦。");
+            event.setCancelled(true);
+            event.getPlayer().closeInventory();
+        }
     }
 
     @Override

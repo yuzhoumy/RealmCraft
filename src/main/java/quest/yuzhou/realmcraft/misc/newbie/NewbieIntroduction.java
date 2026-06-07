@@ -2,22 +2,31 @@ package quest.yuzhou.realmcraft.misc.newbie;
 
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import quest.yuzhou.realmcraft.RealmCraft;
 import quest.yuzhou.realmcraft.Utilities;
 
-public class NewbieIntroduction {
+import java.util.ArrayList;
+import java.util.List;
+
+public class NewbieIntroduction implements Listener {
 
     private final RealmCraft plugin;
+    private final List<Player> running;
 
     public NewbieIntroduction(RealmCraft plugin) {
         this.plugin = plugin;
+        this.running = new ArrayList<>();
     }
 
     public void run(Player player) {
         startDialogue(player, 0);
+        running.add(player);
     }
 
     private void startDialogue(Player player, int step) {
@@ -275,6 +284,7 @@ public class NewbieIntroduction {
     }
 
     private void end(Player player) {
+        running.remove(player);
         player.teleport(new Location(plugin.fieldWorld, -463, -59, 786, 180, 0));
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pweather reset " + player.getName());
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ptime reset " + player.getName());
@@ -283,4 +293,12 @@ public class NewbieIntroduction {
         player.setGameMode(GameMode.SURVIVAL);
     }
 
+    public List<Player> getRunning() {
+        return running;
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        running.remove(event.getPlayer());
+    }
 }
