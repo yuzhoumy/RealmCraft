@@ -1,0 +1,170 @@
+# Season Configuration
+# ===========================
+
+# Start date for the season system (format: dd/MM/yyyy)
+# This is the date when Season 1, Day 1 begins
+# All seasons are calculated from this date
+start-date: "18/12/2025"
+
+# Indicate whether the season change event is already run.
+season-change-event-is-run: false
+
+# Define your seasons here
+# Each season lasts exactly 28 days
+# Format: season_number: "Season Name"
+seasons:
+  "Spring":
+    day-7:
+      wood:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      iron:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      silver:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      gold:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      diamond:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+    day-14:
+      wood:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      iron:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      silver:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      gold:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      diamond:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+    day-21:
+      wood:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      iron:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      silver:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      gold:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      diamond:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+  "Summer":
+    day-7:
+      wood:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      iron:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      silver:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      gold:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      diamond:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+    day-14:
+      wood:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      iron:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      silver:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      gold:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      diamond:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+    day-21:
+      wood:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      iron:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      silver:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      gold:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      diamond:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+  "Autumn":
+    day-7:
+      wood:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      iron:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      silver:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      gold:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      diamond:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+    day-14:
+      wood:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      iron:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      silver:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      gold:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      diamond:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+    day-21:
+      wood:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      iron:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      silver:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      gold:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+      diamond:
+        - "MISCELLANEOUS-HEIYAOBENWEI-1"
+        - "CONSUMABLE-ZHIPIAO1-3"
+
+# Notes:
+# - You can have any number of seasons (1-100)
+# - Each season must have a unique number
+# - Season numbers should be sequential starting from 1
+# - All seasons are exactly 28 days long
+# - The system cycles through seasons automatically
+# - Season changes happen at 00:00:00 (midnight) real-world time

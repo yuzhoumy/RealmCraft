@@ -1,0 +1,5 @@
+enter-biome-sound: block.small_amethyst_bud.break
+biome-effects:
+  main1:
+    jungle:
+      - night_vision

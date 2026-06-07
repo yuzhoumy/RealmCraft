@@ -1,0 +1,13 @@
+instances:
+  tuzhu:
+    display-name: '&6【&4&l土著部落&6】'
+    boss-type: tuzhu3
+    max-broadcast-distance: 200
+    wave-amount: 3
+    max-wave-time: 180
+    interval-between-waves: 20
+    cooldown: 1800 #30 minutes
+    prize: 100
+    penalty: 10000
+    button-location: main1,738,95,585
+    boss-spawn-point: main1,738,100,585
